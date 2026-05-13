@@ -1,0 +1,87 @@
+<div class="catalog">
+  <div class="container">
+    <div class="catalog-title">
+      Каталог
+    </div>
+    <div class="catalog-head">
+      <div class="catalog-applied-filters">
+        <div class="catalog-applied-filter" *ngFor="let appliedFilter of appliedFilters">
+          <span>{{ appliedFilter.name }}</span>
+          <a (click)="removeAppliedFilter(appliedFilter)">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="0.935622" y1="0.649902" x2="12.9564" y2="12.6707" stroke="#A8ABA7" stroke-linecap="round"/>
+              <line x1="12.9238" y1="0.629958" x2="0.903013" y2="12.6508" stroke="#A8ABA7" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+      <div class="catalog-sorting" [class.open]="sortingOpen" (click)="toggleSorting()">
+        <div class="catalog-sorting-head">
+          <span>Сортировать</span>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M10.0003 14C9.41693 14 8.83359 13.775 8.39193 13.3334L2.95859 7.90003C2.71693 7.65837 2.71693 7.25837 2.95859 7.0167C3.20026 6.77503 3.60026 6.77503 3.84193 7.0167L9.27526 12.45C9.67526 12.85 10.3253 12.85 10.7253 12.45L16.1586 7.0167C16.4003 6.77503 16.8003 6.77503 17.0419 7.0167C17.2836 7.25837 17.2836 7.65837 17.0419 7.90003L11.6086 13.3334C11.1669 13.775 10.5836 14 10.0003 14Z"
+              fill="#2C2C2C"/>
+          </svg>
+        </div>
+        <div class="catalog-sorting-body">
+          <div class="catalog-sorting-item"
+               [class.active]="this.activeParams.sort ? this.activeParams.sort === sortingOption.value : false"
+               *ngFor="let sortingOption of sortingOptions"
+               (click)="sort(sortingOption.value)"
+          >
+            {{ sortingOption.name }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="catalog-layout">
+      <div class="catalog-filters">
+        <category-filter [categoryWithTypes]="categoryWithTypes"
+                         *ngFor="let categoryWithTypes of categoriesWithTypes"></category-filter>
+        <category-filter type="height"></category-filter>
+        <category-filter type="diameter"></category-filter>
+      </div>
+      <div class="catalog-products">
+        <product-card [countInCart]="product.countInCart" *ngFor="let product of products" [product]="product"></product-card>
+        <div *ngIf="products.length === 0">0 товаров. Попробуйте измените параметры фильтров.</div>
+      </div>
+    </div>
+
+    <div class="pagination" *ngIf="pages.length > 1">
+      <div class="pagination-arrow"
+           (click)="openPrevPage()"
+      [class.disabled]="activeParams.page ? activeParams.page === 1 : true"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M9.56988 5.09165C9.75988 5.09165 9.94988 5.16045 10.0999 5.3079C10.3899 5.59295 10.3899 6.06477 10.0999 6.34983L4.55988 11.7954L10.0999 17.241C10.3899 17.526 10.3899 17.9979 10.0999 18.2829C9.80988 18.568 9.32988 18.568 9.03988 18.2829L2.96988 12.3164C2.67988 12.0313 2.67988 11.5595 2.96988 11.2744L9.03988 5.3079C9.18988 5.16045 9.37988 5.09165 9.56988 5.09165Z"
+            fill="#2C2C2C"/>
+          <path
+            d="M3.67 11.0582L20.5 11.0582C20.91 11.0582 21.25 11.3924 21.25 11.7954C21.25 12.1984 20.91 12.5326 20.5 12.5326L3.67 12.5326C3.26 12.5326 2.92 12.1984 2.92 11.7954C2.92 11.3924 3.26 11.0582 3.67 11.0582Z"
+            fill="#2C2C2C"/>
+        </svg>
+      </div>
+      <div class="pagination-pages">
+        <a class="pagination-page" (click)="openPage(page)"
+           *ngFor="let page of pages"
+           [class.active]="this.activeParams.page ? this.activeParams.page === page : (page === 1)"
+        >{{ page }}</a>
+      </div>
+      <div class="pagination-arrow"
+           (click)="openNextPage()"
+           [class.disabled]="activeParams.page ? activeParams.page === pages.length : false"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M14.4301 18.4993C14.2401 18.4993 14.0501 18.4305 13.9001 18.2831C13.6101 17.998 13.6101 17.5262 13.9001 17.2411L19.4401 11.7955L13.9001 6.34996C13.6101 6.06491 13.6101 5.59309 13.9001 5.30803C14.1901 5.02297 14.6701 5.02297 14.9601 5.30803L21.0301 11.2746C21.3201 11.5596 21.3201 12.0315 21.0301 12.3165L14.9601 18.2831C14.8101 18.4305 14.6201 18.4993 14.4301 18.4993Z"
+            fill="#2C2C2C"/>
+          <path
+            d="M20.33 12.5328H3.5C3.09 12.5328 2.75 12.1986 2.75 11.7956C2.75 11.3926 3.09 11.0583 3.5 11.0583H20.33C20.74 11.0583 21.08 11.3926 21.08 11.7956C21.08 12.1986 20.74 12.5328 20.33 12.5328Z"
+            fill="#2C2C2C"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>

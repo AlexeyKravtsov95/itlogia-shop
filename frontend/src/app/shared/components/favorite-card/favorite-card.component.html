@@ -1,0 +1,23 @@
+<div class="favorite-product">
+  <div class="favorite-product-image"
+       [ngStyle]="{'background-image': 'url(' + serverStaticPath + product.image + ')'}">
+  </div>
+  <div class="favorite-product-name">{{product.name}}</div>
+  <div class="favorite-product-price">{{product.price}} BYN</div>
+  <div class="favorite-product-action">
+    <div class="favorite-product-action-block" *ngIf="countInCart">
+      <button class="button button-transparent button-in-cart">
+        <span>В корзине</span>
+        <span (click)="removeFromCart(product)">Удалить</span>
+      </button>
+      <count-selector [count]="count" (onCountChange)="updateCount(product, $event)"></count-selector>
+    </div>
+    <button class="button" (click)="addToCart(product)" *ngIf="!countInCart">В корзину</button>
+  </div>
+  <div class="favorite-product-remove" (click)="removeFromFavorites(product.id)">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="0.935622" y1="0.649902" x2="12.9564" y2="12.6707" stroke="#A8ABA7" stroke-linecap="round"/>
+      <line x1="12.9238" y1="0.629958" x2="0.903013" y2="12.6508" stroke="#A8ABA7" stroke-linecap="round"/>
+    </svg>
+  </div>
+</div>
