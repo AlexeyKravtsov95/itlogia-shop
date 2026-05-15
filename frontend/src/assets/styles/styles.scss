@@ -3,4 +3,18 @@
 @import "mixins";
 @import "global";
 
-//html, body { height: 100%; }
+html, body { height: 100%; }
+
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+router-outlet + * {
+  flex: 1 0 auto;
+}
+
+footer-component {
+  flex: 0 0 auto;
+}
